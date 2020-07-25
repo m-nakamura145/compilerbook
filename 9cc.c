@@ -251,7 +251,7 @@ int main(int argc, char **argv) {
   if (argc != 2)
       error("%s: invalid number of arguments", argv[0]);
 
-  // トークナイズとパースする。
+  // トークナイズしてパースする。
   user_input = argv[1];
   token = tokenize();
   Node *node = expr();
@@ -261,11 +261,11 @@ int main(int argc, char **argv) {
   printf(".globl main\n");
   printf("main:\n");
 
-  // Traverse the AST to emit assembly.
+  // 抽象構文木を下りながらコード生成
   gen(node);
 
-  // A result must be at the top of the stack, so pop it
-  // to RAX to make it a program exit code.
+  // スタックトップに式全体の値が残っているはずなので
+  // それをRAXにロードして関数からの返り値とする
   printf("  pop rax\n");
   printf("  ret\n");
   return 0;
